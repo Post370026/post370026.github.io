@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мое портфолио с pdfmake</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.min.js"></script>
+    <style>
+        /* Стили остаются без изменений */
+        :root {
+            --bg-color: #f9fafb;
+            --text-color: #111827;
+            --card-bg: #ffffff;
+            --border-color: #e5e7eb;
+            --primary-color: #3b82f6;
+            --hover-color: #2563eb;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #111827;
+            --text-color: #f9fafb;
+            --card-bg: #1f2937;
+            --border-color: #374151;
+            --primary-color: #60a5fa;
+            --hover-color: #93c5fd;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: var(--hover-color);
+        }
+
+        button.outline {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+        }
+
+        button.outline:hover {
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+        }
+
+        .tab.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 300px;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            font-family: inherit;
+            font-size: 16px;
+            resize: vertical;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #10b981;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notification.error {
+            background-color: #ef4444;
+        }
+
+        .info-box {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: rgba(59, 130, 246, 0.1);
+            border: 1px solid var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .buttons {
+                width: 100%;
+            }
+            
+            button {
+                flex: 1;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>Витрина портфолио</h1>
+                <p id="portfolio-id">ID: Загрузка...</p>
+            </div>
+            <div class="buttons">
+                <button id="theme-toggle" class="outline">🌙 Сменить тему</button>
+                <button id="preview-toggle" class="outline">👁️ Предпросмотр</button>
+                <button id="share-btn" class="outline">📤 Поделиться</button>
+                <button id="download-pdf">📄 Скачать PDF</button>
+            </div>
+        </div>
+
+        <div id="notification" class="notification" style="display: none;"></div>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="article">Статья</div>
+            <div class="tab" data-tab="card">Карточка товара</div>
+            <div class="tab" data-tab="landing">Лендинг</div>
+            <div class="tab" data-tab="social">Соцсети</div>
+            <div class="tab" data-tab="email">Email</div>
+        </div>
+
+        <div class="card">
+            <div id="preview-content" style="display: none;">
+                <h3 id="preview-title"></h3>
+                <p id="preview-text" style="white-space: pre-line;"></p>
+            </div>
+            <textarea id="content-editor" placeholder="Начните вводить текст..."></textarea>
+        </div>
+
+        <div class="info-box">
+            <h3>Как использовать?</h3>
+            <p>1. Редактируйте текст в поле выше</p>
+            <p>2. Нажмите "Поделиться" чтобы скопировать ссылку на ваше портфолио</p>
+            <p>3. Нажмите "Скачать PDF" чтобы сохранить резервную копию</p>
+            <p>4. Все данные сохраняются автоматически в вашем браузере</p>
+        </div>
+    </div>
+
+    <script>
+        // Состояние приложения
+        const state = {
+            darkMode: false,
+            previewMode: false,
+            activeTab: 'article',
+            portfolioId: generateId(),
+            content: {
+                article: { title: "Нативная статья", text: "Смартфоны 2025 года: на что смотреть, чтобы не прогореть..." },
+                card: { title: "Карточка товара", text: "Oppo Reno 14 Pro — 3×50 МП камеры, экран 120 Гц, батарея 6200 мАч..." },
+                landing: { title: "Лендинг", text: "Realme GT 6 Pro. Смартфон, который работает на тебя..." },
+                social: { title: "Социальные сети", text: "Ваш смартфон работает на вас или вы — на зарядку? 🔋..." },
+                email: { title: "Email-рассылка", text: "3 ошибки при выборе смартфона, которые обойдутся вам в 30 000 ₽..." }
+            }
+        };
+
+        // Генерация ID портфолио
+        function generateId() {
+            return Math.random().toString(36).substring(2, 10);
+        }
+
+        // Инициализация при загрузке
+        function init() {
+            loadFromStorage();
+            updatePortfolioId();
+            setupEventListeners();
+            renderActiveTab();
+            applyTheme();
+        }
+
+        // Загрузка из localStorage
+        function loadFromStorage() {
+            const saved = localStorage.getItem('portfolioData');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                Object.assign(state, parsed);
+            }
+        }
+
+        // Сохранение в localStorage
+        function saveToStorage() {
+            localStorage.setItem('portfolioData', JSON.stringify(state));
+        }
+
+        // Обновление отображения ID портфолио
+        function updatePortfolioId() {
+            document.getElementById('portfolio-id').textContent = `ID: ${state.portfolioId}`;
+        }
+
+        // Настройка обработчиков событий
+        function setupEventListeners() {
+            // Переключение темы
+            document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+            
+            // Переключение режима предпросмотра
+            document.getElementById('preview-toggle').addEventListener('click', togglePreview);
+            
+            // Кнопка поделиться
+            document.getElementById('share-btn').addEventListener('click', sharePortfolio);
+            
+            // Кнопка скачать PDF
+            document.getElementById('download-pdf').addEventListener('click', downloadPDF);
+            
+            // Переключение вкладок
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+            });
+            
+            // Редактирование текста
+            document.getElementById('content-editor').addEventListener('input', (e) => {
+                state.content[state.activeTab].text = e.target.value;
+                saveToStorage();
+            });
+        }
+
+        // Переключение темы
+        function toggleTheme() {
+            state.darkMode = !state.darkMode;
+            applyTheme();
+            saveToStorage();
+        }
+
+        // Применение темы
+        function applyTheme() {
+            if (state.darkMode) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                document.getElementById('theme-toggle').textContent = '☀️ Светлая тема';
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                document.getElementById('theme-toggle').textContent = '🌙 Тёмная тема';
+            }
+        }
+
+        // Переключение режима предпросмотра
+        function togglePreview() {
+            state.previewMode = !state.previewMode;
+            renderActiveTab();
+        }
+
+        // Переключение вкладок
+        function switchTab(tabName) {
+            state.content[state.activeTab].text = document.getElementById('content-editor').value;
+            saveToStorage();
+            
+            state.activeTab = tabName;
+            
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.tab === tabName);
+            });
+            
+            renderActiveTab();
+        }
+
+        // Отображение активной вкладки
+        function renderActiveTab() {
+            const content = state.content[state.activeTab];
+            const editor = document.getElementById('content-editor');
+            const preview = document.getElementById('preview-content');
+            const previewTitle = document.getElementById('preview-title');
+            const previewText = document.getElementById('preview-text');
+            
+            if (state.previewMode) {
+                editor.style.display = 'none';
+                preview.style.display = 'block';
+                previewTitle.textContent = content.title;
+                previewText.textContent = content.text;
+                document.getElementById('preview-toggle').textContent = '✏️ Редактировать';
+            } else {
+                editor.style.display = 'block';
+                preview.style.display = 'none';
+                editor.value = content.text;
+                editor.placeholder = `Введите текст для ${content.title.toLowerCase()}...`;
+                document.getElementById('preview-toggle').textContent = '👁️ Предпросмотр';
+            }
+        }
+
+        // Поделиться портфолио (генерация ссылки)
+        function sharePortfolio() {
+            state.content[state.activeTab].text = document.getElementById('content-editor').value;
+            saveToStorage();
+            
+            const shareData = {
+                id: state.portfolioId,
+                content: state.content,
+                timestamp: new Date().toISOString()
+            };
+            
+            const encodedData = btoa(JSON.stringify(shareData));
+            const shareUrl = `${window.location.origin}${window.location.pathname}#${encodedData}`;
+            
+            navigator.clipboard.writeText(shareUrl).then(() => {
+                showNotification('Ссылка скопирована в буфер обмена!');
+            }).catch(err => {
+                showNotification('Не удалось скопировать ссылку', true);
+                console.error('Ошибка копирования:', err);
+            });
+        }
+
+        // Загрузка PDF с использованием pdfmake
+        function downloadPDF() {
+            state.content[state.activeTab].text = document.getElementById('content-editor').value;
+            saveToStorage();
+            
+            // Создаем документ с использованием pdfmake
+            const documentDefinition = {
+                content: [
+                    { text: 'Портфолио копирайтера', style: 'header' },
+                    { text: `ID: ${state.portfolioId}`, style: 'subheader' },
+                    { text: `Дата создания: ${new Date().toLocaleDateString()}`, style: 'subheader' },
+                    { text: '', margin: [0, 15, 0, 0] },
+                    
+                    // Добавляем контент из всех разделов
+                    ...Object.values(state.content).map(item => ([
+                        { text: item.title, style: 'sectionHeader' },
+                        { text: item.text, style: 'content' },
+                        { text: '', margin: [0, 10, 0, 0] }
+                    ])).flat(),
+                    
+                    { text: '', margin: [0, 20, 0, 0] },
+                    { text: 'Онлайн-версия портфолио', style: 'sectionHeader' },
+                    { text: window.location.href, style: 'link', link: window.location.href }
+                ],
+                styles: {
+                    header: {
+                        fontSize: 18,
+                        bold: true,
+                        margin: [0, 0, 0, 10]
+                    },
+                    subheader: {
+                        fontSize: 12,
+                        margin: [0, 0, 0, 5]
+                    },
+                    sectionHeader: {
+                        fontSize: 14,
+                        bold: true,
+                        margin: [0, 10, 0, 5]
+                    },
+                    content: {
+                        fontSize: 12,
+                        margin: [0, 0, 0, 10]
+                    },
+                    link: {
+                        fontSize: 10,
+                        color: 'blue',
+                        margin: [0, 0, 0, 5]
+                    }
+                },
+                defaultStyle: {
+                    font: 'Roboto'
+                }
+            };
+            
+            // Создаем и скачиваем PDF
+            pdfMake.createPdf(documentDefinition).download(`portfolio-${state.portfolioId}.pdf`);
+            showNotification('PDF успешно сохранен!');
+        }
+
+        // Показать уведомление
+        function showNotification(message, isError = false) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = isError ? 'notification error' : 'notification';
+            notification.style.display = 'flex';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        // Загрузка данных из хеша URL
+        function loadFromHash() {
+            if (window.location.hash) {
+                try {
+                    const hash = window.location.hash.substring(1);
+                    const decoded = JSON.parse(atob(hash));
+                    
+                    if (decoded.id && decoded.content) {
+                        state.portfolioId = decoded.id;
+                        state.content = decoded.content;
+                        updatePortfolioId();
+                        renderActiveTab();
+                        showNotification('Портфолио загружено из ссылки!');
+                    }
+                } catch (e) {
+                    console.error('Ошибка загрузки из хеша:', e);
+                }
+            }
+        }
+
+        // Инициализация при загрузке страницы
+        window.addEventListener('DOMContentLoaded', () => {
+            init();
+            loadFromHash();
+        });
+
+        // Автосохранение при закрытии страницы
+        window.addEventListener('beforeunload', () => {
+            state.content[state.activeTab].text = document.getElementById('content-editor').value;
+            saveToStorage();
+        });
+    </script>
+</body>
+</html>
