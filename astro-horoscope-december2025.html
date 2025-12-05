@@ -1,66 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>General Astrological Forecast — December 2025</title>
-    <style>
-        body {
-            font-family: 'Georgia', serif;
-            max-width: 800px;
-            margin: 40px auto;
-            line-height: 1.6;
-            padding: 20px;
-            color: #333;
-            background-color: #fdfdfd;
-        }
-        h1, h2 {
-            color: #2c3e50;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 8px;
-        }
-        .note {
-            font-size: 0.9em;
-            color: #7f8c8d;
-            border-top: 1px solid #eee;
-            padding-top: 20px;
-            margin-top: 30px;
-        }
-        .highlight {
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-left: 4px solid #3498db;
-            margin: 15px 0;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>General Astrological Forecast — December 2025</title>
+  <style>
+    :root {
+      --bg: #fdfdfd;
+      --fg: #333;
+      --card: #fff;
+      --muted: #7f8c8d;
+      --accent: #3498db;
+      --border: #eee;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0f172a;
+      --fg: #e2e8f0;
+      --card: #1e293b;
+      --muted: #94a3b8;
+      --accent: #60a5fa;
+      --border: #334155;
+    }
+
+    body {
+      font-family: Georgia, serif;
+      max-width: 800px;
+      margin: 40px auto;
+      line-height: 1.6;
+      padding: 20px;
+      color: var(--fg);
+      background-color: var(--bg);
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    h1, h2 {
+      color: var(--fg);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+
+    .highlight {
+      background-color: var(--card);
+      padding: 15px;
+      border-left: 4px solid var(--accent);
+      margin: 15px 0;
+      border-radius: 4px;
+    }
+
+    .note {
+      font-size: 0.9em;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+      margin-top: 30px;
+    }
+
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      z-index: 100;
+    }
+  </style>
 </head>
-<body>
-    <h1>General Astrological Forecast — December 2025</h1>
-    <p><em>Style: gentle, practical, non-alarmist. Audience: USA (Northern Hemisphere). Written for a test assignment.</em></p>
+<body data-theme="light">
+  <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">🌓</button>
 
-    <h2>Daily Horoscope — December 14, 2025</h2>
-    <p>Today, the stars aren’t asking for grand achievements — they’re offering quiet support for small but meaningful steps. The Moon in Aquarius sparks curiosity about the unexpected: you might feel like reaching out to someone you haven’t spoken to in a while or trying a fresh approach to an old task. With Mars in Sagittarius squaring Neptune, energy can feel a bit scattered — so focus on finishing what’s already in motion, not starting something new. Venus in Scorpio reminds you that real connection thrives on honesty, not perfection. And most of all: don’t chase “maximum.” Today, “enough” is more than enough.</p>
+  <h1>General Astrological Forecast — December 2025</h1>
+  <p><em>Style: gentle, practical, non-alarmist. Audience: USA (Northern Hemisphere). Written for a test assignment.</em></p>
 
-    <h2>Areas of Attention — December 14, 2025</h2>
-    <div class="highlight">
-        <strong>✅ Positive moments of the day</strong><br>
-        — Light, effortless communication: even a short message can bring a warm response.<br>
-        — A sudden clarity on a lingering task — it might resolve itself in just 15 minutes.<br>
-        — Unexpected ideas aren’t distractions — they’re gentle nudges. Listen.
-    </div>
-    <div class="highlight">
-        <strong>⚠️ Gentle cautions</strong><br>
-        — Emotions may feel deeper than they truly are — pause before drawing conclusions.<br>
-        — Minor schedule hiccups are likely, not due to your mistakes, but because the day itself carries a soft “static.” Leave a little extra time.
-    </div>
+  <h2>Daily Horoscope — December 14, 2025</h2>
+  <p>Today, the stars aren’t asking for grand achievements — they’re offering quiet support for small but meaningful steps. The Moon in Aquarius sparks curiosity about the unexpected: you might feel like reaching out to someone you haven’t spoken to in a while or trying a fresh approach to an old task. With Mars in Sagittarius squaring Neptune, energy can feel a bit scattered — so focus on finishing what’s already in motion, not starting something new. Venus in Scorpio reminds you that real connection thrives on honesty, not perfection. And most of all: don’t chase “maximum.” Today, “enough” is more than enough.</p>
 
-    <h2>Weekly Outlook — December 8–14, 2025</h2>
-    <p>This week feels like the quiet evening before a celebration: everything’s nearly ready, but what matters most is pausing to breathe. The Sun in Sagittarius keeps your focus on “Why am I doing this?” rather than “How much did I get done?” The Moon moves from Aquarius into Pisces, so your intuition speaks louder than logic — trust what you feel, especially in conversations. Mars in Sagittarius (until the 15th) gives steady energy for wrapping up old projects, not launching new ones. And Venus in Scorpio continues to whisper: closeness doesn’t require perfection. It only asks for presence.</p>
+  <h2>Areas of Attention — December 14, 2025</h2>
+  <div class="highlight">
+    <strong>✅ Positive moments of the day</strong><br>
+    — Light, effortless communication: even a short message can bring a warm response.<br>
+    — A sudden clarity on a lingering task — it might resolve itself in just 15 minutes.<br>
+    — Unexpected ideas aren’t distractions — they’re gentle nudges. Listen.
+  </div>
+  <div class="highlight">
+    <strong>⚠️ Gentle cautions</strong><br>
+    — Emotions may feel deeper than they truly are — pause before drawing conclusions.<br>
+    — Minor schedule hiccups are likely, not due to your mistakes, but because the day itself carries a soft “static.” Leave a little extra time.
+  </div>
 
-    <h2>Monthly Theme — December 2025</h2>
-    <p>December isn’t about wrapping things up — it’s about letting go of what no longer resonates. The stars aren’t asking for summaries; they’re offering silence so you can choose what to release. Until the 21st, the Sun in Sagittarius keeps meaning at the center: “Why?” matters more than “How much?” After the solstice, the Sun enters Capricorn, bringing not rigid plans, but quiet clarity about what truly deserves your energy. Jupiter retrograde in Gemini invites you to rethink how you communicate — not everything needs an audience. Saturn in Pisces gently reminds you: caring for yourself is a discipline, not a luxury. And Pluto in Aquarius continues its quiet revolution — what used to work “just because” now asks for your conscious choice. December’s greatest gift? The space between tasks. Not for idleness, but for listening: what do you truly want to begin next year?</p>
+  <h2>Weekly Outlook — December 8–14, 2025</h2>
+  <p>This week feels like the quiet evening before a celebration: everything’s nearly ready, but what matters most is pausing to breathe. The Sun in Sagittarius keeps your focus on “Why am I doing this?” rather than “How much did I get done?” The Moon moves from Aquarius into Pisces, so your intuition speaks louder than logic — trust what you feel, especially in conversations. Mars in Sagittarius (until the 15th) gives steady energy for wrapping up old projects, not launching new ones. And Venus in Scorpio continues to whisper: closeness doesn’t require perfection. It only asks for presence.</p>
 
-    <div class="note">
-        <strong>Note:</strong> This text is part of a professional portfolio. All rights reserved. © Igor, 2025.
-    </div>
+  <h2>Monthly Theme — December 2025</h2>
+  <p>December isn’t about wrapping things up — it’s about letting go of what no longer resonates. The stars aren’t asking for summaries; they’re offering silence so you can choose what to release. Until the 21st, the Sun in Sagittarius keeps meaning at the center: “Why?” matters more than “How much?” After the solstice, the Sun enters Capricorn, bringing not rigid plans, but quiet clarity about what truly deserves your energy. Jupiter retrograde in Gemini invites you to rethink how you communicate — not everything needs an audience. Saturn in Pisces gently reminds you: caring for yourself is a discipline, not a luxury. And Pluto in Aquarius continues its quiet revolution — what used to work “just because” now asks for your conscious choice. December’s greatest gift? The space between tasks. Not for idleness, but for listening: what do you truly want to begin next year?</p>
+
+  <div class="note">
+    <strong>Note:</strong> This text is part of a professional portfolio. All rights reserved. © Igor, 2025.
+  </div>
+
+  <script>
+    function setTheme(theme) {
+      document.body.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      document.getElementById('theme-toggle').textContent = theme === 'light' ? '🌓' : '☀️';
+    }
+
+    document.getElementById('theme-toggle').addEventListener('click', () => {
+      const current = document.body.getAttribute('data-theme');
+      setTheme(current === 'light' ? 'dark' : 'light');
+    });
+
+    // Load saved theme on page load
+    const saved = localStorage.getItem('theme') || 'light';
+    setTheme(saved);
+  </script>
 </body>
 </html>
